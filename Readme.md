@@ -4,7 +4,11 @@
 This repository comprises the conclusive outcomes of a network data collection project. In this project, a user network was constructed, encompassing 2057 users, and data was gathered spanning from April 2023 to June 2023. The data includes details about users' retweet relationships and the content of tweets that pique their interest.
 
 ## Final Cleaned Data
-The final cleaned adjacancy matrix data can be found at [Adjacancy_Matrix](./Adjacancy_Matrix/) Folder, and the final covariates data can be found at [Final_Covariates](./Final_Covariates/) Folder. Each dataset will has 2057 row representing 2057 users in our user network.
+The final cleaned adjacancy matrix data can be found at [Adjacancy_Matrix](./Adjacancy_Matrix/) Folder, and the final covariates data can be found at [Final_Covariates](./Final_Covariates/) Folder. Each dataset will consist of 2057 rows, representing the 2057 users in our network. These datasets span across 18 timepoints, ranging from April 2023 to June 2023.
+
+The adjacency matrix dataset depicts the retweet relationships among users, whereas the final covariate dataset contains the information related to hashtag topics, tweet language rates, and other essential user data.
+
+    Within the adjacency matrix, over time, certain users who have closed their public pages or been deleted from the tweets have had their representation modified to values 6 and 9.
 
 ## Raw Data Introduction
 There are three folders for raw data, which is [Tweets](./Retweets/), [Retweets](./Retweets/) and [Users](./Users/).
