@@ -3,12 +3,13 @@
 ## Introduction
 This repository comprises the conclusive outcomes of a network data collection project. In this project, a user network was constructed, encompassing 2057 users, and data was gathered spanning from April 2023 to June 2023. The data includes details about users' retweet relationships and the content of tweets that pique their interest.
 
-## Final Cleaned Data
-The final cleaned adjacancy matrix data can be found at [Adjacancy_Matrix](./Adjacancy_Matrix/) Folder, and the final covariates data can be found at [Final_Covariates](./Final_Covariates/) Folder. Each dataset will consist of 2057 rows, representing the 2057 users in our network. These datasets span across 18 timepoints, ranging from April 2023 to June 2023.
+## Data
+The final cleaned adjacancy matrix data can be found at [Adjacancy_Matrix](./Adjacancy_Matrix/) Folder, and the final covariates data can be found at [Final_Covariates](./Final_Covariates/) Folder. 
+Each folder contains 18 files that were collected on the 18 timepoints from April 2023 to June 2023. Each file contains a matrix with 2057 rows, representing 2057 users in the network. 
 
-The adjacency matrix dataset depicts the retweet relationships among users, whereas the final covariate dataset contains the information related to hashtag topics, tweet language rates, and other essential user data.
+The adjacency matrix dataset depicts the retweet relationships among users, whereas the final covariate dataset contains information related to hashtag topics (which covariates?), tweet language rates (which covariates?), and other essential user data including #original tweets,  #retweets, #replies, #quotes, #followers, #following, #tweets, account verified or not (which covariates?). The file "location.json" gives the location of users according to their announcement. 
 
-    Within the adjacency matrix, over time, certain users who have closed their public pages or been deleted from the tweets have had their representation modified to values 6 and 9.
+Over time, users who have closed their public pages (denoted as 6) or been closed by tweets (denoted by 9) are identified in the adjacency matrix.
 
 ## Raw Data Introduction
 There are three folders for raw data, which is [Tweets](./Retweets/), [Retweets](./Retweets/) and [Users](./Users/).
