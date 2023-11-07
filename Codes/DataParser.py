@@ -12,6 +12,14 @@ class DataParser:
         pass
 
     def read_data(self, path, dates_to_include):
+        """
+        Input: 
+            path: path of the data folder, which should be the /Users/ folder
+            dates_to_include: a list of dates to include, e.g. ["04-13", "04-11", "04-17"]
+        Output:
+            results: a dictionary of {date: dataframe}, e.g. {"04-13": df, "04-11": df, "04-17": df}
+            each df contains the information for whole network
+        """
         results = {}
         for date in dates_to_include:
             df = self.read_single_csv(path, date)
@@ -20,6 +28,13 @@ class DataParser:
         return results
 
     def read_single_csv(self, path, date):
+        """
+        Input:
+            path: path of the data folder, which should be the /Users/ folder
+            date: date of the data, e.g. "04-13"
+        Output:
+            df: dataframe of the data for the date containing the information for whole network
+        """
         df1 = pd.read_csv(f'{path}users_data_one_2023-{date}.csv', engine='python')
         df2 = pd.read_csv(f'{path}users_data_two_2023-{date}.csv', engine='python')
         df2.drop([228, 229], inplace=True)
@@ -29,6 +44,15 @@ class DataParser:
         return df
     
     def generate_adjacancy_matrix(self, df, date):
+        """
+        Input:
+            df: dataframe of the data for the date containing the information for whole network
+            date: date of the data, e.g. "04-13"
+        Output:
+            index_to_users: a dictionary of {index: user}
+            users_to_index: a dictionary of {user: index}
+            adjacency_matrix: a numpy array of the adjacancy matrix
+        """
         # Construct a dictionary of {user: index} and {index: user}
         users_to_index = {}
         index_to_users = {}
@@ -58,6 +82,15 @@ class DataParser:
         return index_to_users, users_to_index, adjacency_matrix
     
     def generate_adjacancy_matrix_with_adjustment(self, df, date):
+        """
+        Input:
+            df: dataframe of the data for the date containing the information for whole network
+            date: date of the data, e.g. "04-13"
+        Output:
+            index_to_users: a dictionary of {index: user}
+            users_to_index: a dictionary of {user: index}
+            adjacency_matrix: a numpy array of the adjacancy matrix where 6 represents private users and 9 represents deleted users
+        """
         index_to_users, users_to_index, adjacency_matrix = self.generate_adjacancy_matrix(df, date)
         # Get the list of private users and deleted users
         private_users = self.get_private_users(df)
@@ -74,22 +107,39 @@ class DataParser:
         return index_to_users, users_to_index, adjacency_matrix
 
     def get_private_users(self, df):
+        """
+        Input: 
+            df: dataframe of the data for the date containing the information for whole network
+        Output:
+            private: a list of private users
+        """
         private = df[df["numberOfRetweets"].isnull() & df["numberOfFollowers"].notnull()]
         return private["id"].tolist()
 
     def get_deleted_users(self, df):
+        """
+        Input: 
+            df: dataframe of the data for the date containing the information for whole network
+        Output:
+            private: a list of deleted users
+        """
         delete = df[df["numberOfRetweets"].isnull() & df["numberOfFollowers"].isnull()]
         return delete["id"].tolist()
     
     def adjacancy_matrix_validation(self, matrix):
+        """
+        Input: adjacancy matrix
+        Output: plots of eigenvalues, frequency of eigenvalues and first 2 eigenvectors
+        """
         eigenvalues, eigenvectors = np.linalg.eigh(matrix)
-        eigenvalues_freq = eigenvalues / eigenvalues.sum()
-        sorted_eigenvalues_freq = sorted(eigenvalues_freq, reverse=True)[:50]
-        ## Plot the frequency of eigenvalues
-        plt.plot(sorted_eigenvalues_freq)
+        eigenvalues_abs = list(map(abs, eigenvalues))
+        eigenvalues_abs = sorted(eigenvalues_abs, reverse=True) [:50]
+
+        ## Plot the eigenvalues
+        plt.plot(eigenvalues_abs)
         plt.xlabel('Eigenvalue')
-        plt.ylabel('Frequency')
-        plt.title('Scree Plot')
+        plt.ylabel('Absolute Value')
+        plt.title('Eigenvalues Plot')
         plt.show()
 
         ## Plot first 2 eigenvectors scatter plot
@@ -109,6 +159,10 @@ class DataParser:
         plt.show()
 
     def generate_fundamental_covariates(self, df):
+        """
+        Input: dataframe of the data for the date containing the information for whole network
+        Output: dataframe of the fundamental covariates
+        """
         columns_to_include = ['id', 'numberOfOriginalTweets', 'numberOfRetweets',
         'numberOfReplies', 'numberOfQuotes', 'numberOfFollowers',
         'numberOfFollowing', 'numberOfTweets', 'verified']

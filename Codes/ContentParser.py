@@ -11,6 +11,15 @@ class ContentParser:
         pass
 
     def read_retweets(self, path, date):
+        """
+        Input:
+            path: path of the Retweets folder, which should be the /Retweets/ folder
+            
+            date: date of the data, e.g. "04-13"
+
+        Output:
+            content_dict: a dictionary of {user: {retweets_id: retweets content}}
+        """
         with open("{}tweets_content_one_2023-{}_new.json".format(path, date), 'r') as f:
             content_dict_one = json.load(f)
             f.close()
@@ -21,6 +30,15 @@ class ContentParser:
         return content_dict
     
     def read_tweets(self, path, date):
+        """
+        Input:
+            path: path of the Tweets folder, which should be the /Tweets/ folder
+
+            date: date of the data, e.g. "04-13"
+
+        Output:
+            content_dict: a dictionary of {user: {tweets content related dic}}
+        """
         with open("{}tweets_content_one_2023-{}.json".format(path, date), 'r') as f:
             content_dict_one = json.load(f)
             f.close()
@@ -31,6 +49,15 @@ class ContentParser:
         return content_dict
     
     def read_retweets_for_dates(self, path, dates_to_include):
+        """
+        Input:
+            path: path of the Retweets folder, which should be the /Retweets/ folder
+            
+            dates_to_include: a list of dates to include, e.g. ["04-13", "04-11", "04-17"]
+
+        Output:
+            results: a dictionary of {date: {user: {retweets_id: retweets content}}}
+        """
         results = {}
         for date in dates_to_include:
             content = self.read_retweets(path, date)
@@ -39,6 +66,14 @@ class ContentParser:
         return results
     
     def read_tweets_for_dates(self, path, dates_to_include):
+        """
+        Input: 
+            path: tweets folder path, which should be the /Tweets/ folder
+            dates_to_include: a list of dates to include, e.g. ["04-13", "04-11", "04-17"]
+
+        Output:
+            results: a dictionary of {date: {user: {tweets content related dic}}}
+        """
         results = {}
         for date in dates_to_include:
             content = self.read_tweets(path, date)
@@ -47,6 +82,10 @@ class ContentParser:
         return results
     
     def find_language(self, tweet):
+        """
+        Input: single tweet
+        Output: language of the tweet
+        """
         try:
             language = detect(tweet)
         except:
@@ -56,6 +95,8 @@ class ContentParser:
     def generate_language_rate_for_a_dataset(self, dataset):
         """
         Input: a dictionary of tweets read from read_tweets
+
+        Output: a dictionary of {user: {language: count}}
         """
         users_tweets_language = {}
         count = 0
@@ -83,6 +124,11 @@ class ContentParser:
         return users_tweets_language
     
     def generate_language_df(self, users_tweets_language):
+        """
+        Input: dictionary of {user: {language: count}}
+
+        Output: dataframe of {userid, language1, language2, ...} where language1 is the frequency of language1
+        """
         df = pd.DataFrame(users_tweets_language).T
         df.fillna(0, inplace=True)
         df.reset_index(inplace=True)
@@ -92,8 +138,9 @@ class ContentParser:
     
     def find_hashtag(self, tweet):
         """
-        input: single tweet
-        output: list of hashtags all lowercase
+        Input: single tweet
+
+        Output: list of hashtags all lowercase for this single tweets
         """
         hashtags =  re.findall('(#[A-Za-z]+[A-Za-z0-9-_]+)', tweet)
         if hashtags:
@@ -102,8 +149,9 @@ class ContentParser:
 
     def update_dictionary(self, datalist, dictionary):
         """
-        input: datalist, dict to update
-        output: None
+        Input: datalist, dict to update
+
+        Output: This function will update the dictionary with the datalist to generate a frequency dictionary
         """
         for data in datalist:
             if data in dictionary:
@@ -114,8 +162,9 @@ class ContentParser:
 
     def extract_hashtags_for_tweets(self, dataset_dic):
         """
-        input: dict of datasets
-        output: dictionary of tweets with hashtags
+        Input: dict of datasets
+
+        Output: dictionary of tweets with hashtags
         """
         dict_of_tweets = {}
         for key, value in dataset_dic.items():
@@ -130,6 +179,11 @@ class ContentParser:
         return dict_of_tweets
     
     def generate_hashtags_set(self, dataset_dic):
+        """
+        Input: dict of datasets which is {date : {user: {id: tweet}}} format
+
+        Output: hashtags dictionary which is {hashtag: count}
+        """
         hashtags_dic = {}
         for key, dictionary in dataset_dic.items():
             for user, twdict in dictionary.items():
@@ -142,6 +196,11 @@ class ContentParser:
         return hashtags_dic
     
     def generate_matrix(self, tweets_hashtags, hashtags_list):
+        """
+        Input: tweets_hashtags, hashtags_list
+
+        Output: matrix of hashtags where each row is a hashtag and each column is a tweet, number in the matrix is the frequency
+        """
         num_hashtags = len(hashtags_list)
         matrix = np.zeros((num_hashtags, len(tweets_hashtags)))
 
@@ -156,6 +215,7 @@ class ContentParser:
     def generate_topics_clusters(self, array, hashtags_list):
         """
         Input: clustering result and hashtags_list
+
         Output: dictionary of {group: [hashtags]}
         """
         groups = {}
@@ -168,6 +228,11 @@ class ContentParser:
         return groups
     
     def generate_vector_for_hashtags_group(self, hashtags_group, hashtags_list):
+        """
+        Input: hashtags_group, hashtags_list
+
+        Output: vector of hashtags_group
+        """
         vector = np.zeros(len(hashtags_list))
         for hashtag in hashtags_group:
             if hashtag in hashtags_list:
@@ -175,6 +240,9 @@ class ContentParser:
         return vector
 
     def generate_vector_groups(self, groups, hashtags_list):
+        """
+        Input
+        """
         vectors_groups = {}
         for key, hashtags_group in groups.items():
             vector = self.generate_vector_for_hashtags_group(hashtags_group, hashtags_list)
@@ -182,6 +250,10 @@ class ContentParser:
         return vectors_groups
     
     def extract_hashtags_for_tweets_and_users(self, dataset):
+        """
+        Input: dict of datasets which is {user: {id: tweet}} format
+        Output: dict of users which is {user: {id: [hashtags]}} format
+        """
         dict_of_users = {}
         for user, twdict in dataset.items():
             dict_of_tweets = {}
