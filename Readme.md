@@ -62,8 +62,14 @@ Inside [Codes](./Codes/) folder contains the data preprocessing scripts for proc
 
 The details of usage has been written in [CodesReadme](./Codes/Codes.md). And the jupyter notebook in Codes folder contain the notebook for how to preprocessing the whole raw dataset using these two helper class.
 
-The [adjacancy_matrix](./Codes/adjacancy_matrix.ipynb) is used to generate the adjacancy matrix based on information using retweets relation between users.
+- The [adjacancy_matrix](./Codes/adjacancy_matrix.ipynb) is used to generate the adjacancy matrix based on information using retweets relation between users.
 
-The [fundamental_covariate.ipynb](./Codes/fundamental_covariates.ipynb) is used to generate the fundamental covariates in [Fundamental_Covariate](./Fundamental_Covariates/) Folder and language rates in [Language_Covariates](./Language_Covariates/) Folder. The [hashtags_generation.ipynb](./Codes/hashtags_generation.ipynb) is used to generate hashtags groups reference and hashtags covariates in [Hashtags_Covariates](./Hashtags_Covariates/). The [location_generation.ipynb](./Codes/location_generation.ipynb) is used for generating the locations for the users using GPT model. Then [aggregate_covarites.ipynb](./Codes/aggregate_covariates.ipynb) helps to aggregate the hashtags, language covariates together into one csv file stored in [Final_Covariates](./Final_Covariates/) Folder.
+- The [fundamental_covariate.ipynb](./Codes/fundamental_covariates.ipynb) is used to generate the fundamental covariates in [Fundamental_Covariate](./Fundamental_Covariates/) Folder and language rates in [Language_Covariates](./Language_Covariates/) Folder.
+
+- The [hashtags_generation.ipynb](./Codes/hashtags_generation.ipynb) is used to generate hashtags groups reference and hashtags covariates in [Hashtags_Covariates](./Hashtags_Covariates/).
+
+- The [location_generation.ipynb](./Codes/location_generation.ipynb) is used for generating the locations for the users using GPT model.
+
+- Then [aggregate_covarites.ipynb](./Codes/aggregate_covariates.ipynb) helps to aggregate the hashtags, language covariates together into one csv file stored in [Final_Covariates](./Final_Covariates/) Folder.
 
 The steps of generating each covariates have been ellaborated inside the jupyter notebook.
