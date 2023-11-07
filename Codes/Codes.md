@@ -1,4 +1,13 @@
 # Table of Contents
+The helper functions inside following DataParser and ContentParser are used to generate the adjacancy matrix and covariates. The whole preprocessing steos can be found from these notebooks:
+
+1. The notebook[fundamental_covariate.ipynb](./Codes/fundamental_covariates.ipynb) is used to generate the fundamental covariates in [Fundamental_Covariate](./Fundamental_Covariates/) Folder and language rates in [Language_Covariates](./Language_Covariates/) Folder.
+2. The [hashtags_generation.ipynb](./Codes/hashtags_generation.ipynb) is used to generate hashtags groups reference and hashtags covariates in [Hashtags_Covariates](./Hashtags_Covariates/).
+3. The [location_generation.ipynb](./Codes/location_generation.ipynb) is used for generating the locations for the users using GPT model.
+4. Then [aggregate_covarites.ipynb](./Codes/aggregate_covariates.ipynb) helps to aggregate the hashtags, language covariates together into one csv file stored in [Final_Covariates](./Final_Covariates/) Folder.
+
+If you wish to obtain intermediate results from the data preprocessing, please refer to the function's introduction within the subsequent sections.
+
 
 * [DataParser](#..DataParser)
   * [DataParser](#..DataParser.DataParser)
@@ -30,7 +39,6 @@
     * [extract\_hashtags\_for\_tweets\_and\_users](#..ContentParser.ContentParser.extract_hashtags_for_tweets_and_users)
 
 <a id="..DataParser"></a>
-
 # DataParser
 
 This DataParser contains the helper functions for adjacancy matrix generation
